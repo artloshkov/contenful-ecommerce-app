@@ -7,21 +7,21 @@ import { Container } from "react-bootstrap";
 import Header from "./Header";
 import { ProductCollection } from "./Product";
 import ProductsGrid from "./UI/ProductsGrid";
+import PageHeading from "./UI/PageHeading";
 
 const RECENT_PRODUCTS = gql`
   query {
-    productCollection(limit: 10, where: { stock_gt: 0 }) {
-      items {
+    getAllProducts(limit: 10) {
+      id,
+      categories {
         id,
-        name,
-        slug,
-        image {
-          title,
-          url
-        },
-        price,
-        stock
+        slug
       }
+      name,
+      slug,
+      image,
+      price,
+      stock
     }
   }
 `;
@@ -29,14 +29,14 @@ const RECENT_PRODUCTS = gql`
 const Home = () => {
   const { loading, data } = useQuery<ProductCollection>(RECENT_PRODUCTS);
 
-  const products = useMemo(() => data?.productCollection.items, [ data ]);
+  const products = useMemo(() => data?.getAllProducts, [ data ]);
 
   return (
     <Fragment>
       <Header />
 
       <Container fluid>
-        <h1 style={{ textAlign: "center", margin: "1rem 0" }}>Latest Products</h1>
+        <PageHeading>Latest Products</PageHeading>
 
         { loading && <p>Loading...</p> }
 

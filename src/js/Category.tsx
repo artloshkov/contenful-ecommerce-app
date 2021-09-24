@@ -3,29 +3,21 @@ import { Button, Container } from "react-bootstrap";
 import { gql, useQuery } from "@apollo/client";
 import { Link, Redirect, useParams } from "react-router-dom";
 import Header from "./Header";
-import { CategoryProductsCollection } from "./Product";
+import { IProduct } from "./Product";
 import ProductsGrid from "./UI/ProductsGrid";
+import styled from "styled-components";
 
 interface UrlParams {
   categorySlug: string,
 }
 
-interface ICategory {
-  id: number,
+export interface ICategory {
+  id: string,
   name: string,
   slug: string,
   description: string,
-  image: {
-    title: string,
-    url: string,
-  },
-  productsCollection?: CategoryProductsCollection,
-}
-
-export interface CategoryCollection {
-  categoryCollection: {
-    items: ICategory[],
-  }
+  image: string,
+  products: IProduct[],
 }
 
 interface SingleCategoryVars {
@@ -33,30 +25,35 @@ interface SingleCategoryVars {
 }
 
 const CATEGORY = gql`
-  query CategoryEntry ($slug: String!) {
-    categoryCollection (where: { slug: $slug }, limit: 1) {
-      items {
+  query getSingleCategoryBySlug ($slug: String!) {
+    getSingleCategoryBySlug (slug: $slug) {
+      name,
+      slug,
+      description,
+      image,
+      products {
         name,
         slug,
         description,
-        image {
-          title,
-          url
-        },
-        productsCollection {
-          items {
-            name,
-            slug,
-            description,
-            image {
-              title,
-              url
-            },
-            price,
-            stock
-          }
-        }
+        image,
+        price,
+        stock
       }
+    }
+  }
+`;
+
+const CategoryPageWrapper = styled.div`
+  margin: 1rem 0;
+
+  .category-info-wrapper {
+    display: flex;
+    justify-content: space-between;
+
+    img {
+      width: 400px;
+      max-width: 100%;
+      margin: 0 1rem 1rem 0;
     }
   }
 `;
@@ -64,12 +61,12 @@ const CATEGORY = gql`
 const Category = () => {
   const { categorySlug } = useParams<UrlParams>();
 
-  const { loading, error, data } = useQuery<CategoryCollection, SingleCategoryVars>(
+  const { loading, error, data } = useQuery<{ getSingleCategoryBySlug: ICategory }, SingleCategoryVars>(
     CATEGORY,
     { variables: { slug: categorySlug }, }
   );
 
-  const category = useMemo(() => data?.categoryCollection.items[0], [ data ]);
+  const category = useMemo(() => data?.getSingleCategoryBySlug, [ data ]);
 
   if (error) {
     return <Redirect to="/not-found" />;
@@ -81,25 +78,28 @@ const Category = () => {
 
       <Container fluid>
         { loading && <p>Loading...</p> }
-        { category &&
-          <div className="category-page-wrapper">
+
+        { !loading && !category && <Redirect to="/not-found" /> }
+
+        { !loading && category &&
+          <CategoryPageWrapper>
             <div className="category-info-wrapper">
-              <img src={ category.image.url } alt={ category.name } />
+              <img src={ category.image ?? "" } alt={ category.name } />
               <div className="category-info-inner">
                 <h1>{ category.name }</h1>
                 <p>{ category.description }</p>
               </div>
             </div>
 
-            { category.productsCollection?.items &&
+            { category.products &&
               <Fragment>
                 <h2>Products</h2>
-                <ProductsGrid products={ category.productsCollection.items } categorySlug={ categorySlug } />
+                <ProductsGrid products={ category.products } categorySlug={ categorySlug } />
               </Fragment>
             }
 
             <Button as={ Link } to="/" variant="secondary">Back</Button>
-          </div>
+          </CategoryPageWrapper>
         }
       </Container>
     </Fragment>

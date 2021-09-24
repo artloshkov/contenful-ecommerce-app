@@ -24,20 +24,15 @@ interface CartProductVars {
 }
 
 const PRODUCTS = gql`
-  query ProductEntry ($ids: [Int]!) {
-    productCollection (where: { id_in: $ids } ) {
-      items {
-        id,
-        name,
-        slug,
-        description,
-        image {
-          title,
-          url
-        },
-        price,
-        stock
-      }
+  query getAllProducts($ids: [Int]!) {
+    getAllProducts(ids: $ids) {
+      id,
+      name,
+      slug,
+      description,
+      image,
+      price,
+      stock
     }
   }
 `;
@@ -61,7 +56,7 @@ export const CartContextProvider = ({ children }: { children: JSX.Element}) =>
   }, []);
 
   useEffect(() => {
-    setProductsInfo(oldProductsInfo => data ? data.productCollection.items : oldProductsInfo);
+    setProductsInfo(oldProductsInfo => data ? data.getAllProducts : oldProductsInfo);
   }, [ data ]);
 
   const productsTotalCount = useMemo(() => Object.values(productsInCart).reduce((accumulator, num) => accumulator + num, 0), [ productsInCart ]);
@@ -107,7 +102,7 @@ export const CartContextProvider = ({ children }: { children: JSX.Element}) =>
     let total = 0;
     Object.keys(productsInCart).forEach(productId => {
       const id = parseInt(productId);
-      const product = _.find(productsInfo, product => product.id === id);
+      const product = _.find(productsInfo, product => parseInt(product.id) === id);
       if (product) {
         total += productsInCart[id] * product.price;
       }

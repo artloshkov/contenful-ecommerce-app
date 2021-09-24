@@ -1,6 +1,8 @@
 import React from "react";
 import { IProduct } from "../Product";
 import { Link } from "react-router-dom";
+import GridWrapper from "./GridWrapper";
+import SingleGridItemWrapper from "./SingleGridItemWrapper";
 
 interface Props {
   categorySlug?: string,
@@ -8,25 +10,15 @@ interface Props {
 }
 
 const ProductsGrid = ({ categorySlug, products }: Props) =>
-  <div className="products-grid-wrapper">
-    <div className="products-grid-inner-wrapper">
+  <GridWrapper columns={4}>
       { products.map(product =>
-        {
-          if (product.stock > 0) {
-            return (
-              <div className="single-product-wrapper" key={ product.slug }>
-                <Link to={ "/" + categorySlug + "/" + product.slug }><img src={ product.image.url } alt={ product.name } /></Link>
-                <Link to={ "/" + categorySlug + "/" + product.slug }><p className="product-name">{ product.name }</p></Link>
-                <p className="product-price">{ "$" + (product.price / 100).toFixed(2) }</p>
-              </div>
-            );
-          }
-
-          return null;
-        }
+        <SingleGridItemWrapper key={ product.slug }>
+          <Link to={ "/" + (categorySlug ? categorySlug : (product.categories ? product.categories[0].slug : "undefined")) + "/" + product.slug }><img src={ product.image ?? "" } alt={ product.name } /></Link>
+          <Link to={ "/" + (categorySlug ? categorySlug : (product.categories ? product.categories[0].slug : "undefined")) + "/" + product.slug }><p className="product-name">{ product.name }</p></Link>
+          <p className="product-price">{ "$" + (product.price / 100).toFixed(2) }</p>
+        </SingleGridItemWrapper>
       )}
-    </div>
-  </div>
+  </GridWrapper>
 ;
 
 export default ProductsGrid;

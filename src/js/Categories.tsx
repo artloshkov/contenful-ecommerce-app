@@ -3,49 +3,47 @@ import Header from "./Header";
 import { Container } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { gql, useQuery } from "@apollo/client";
-import { CategoryCollection } from "./Category";
+import { ICategory } from "./Category";
+import PageHeading from "./UI/PageHeading";
+import GridWrapper from "./UI/GridWrapper";
+import SingleGridItemWrapper from "./UI/SingleGridItemWrapper";
 
 const CATEGORIES = gql`
   query {
-    categoryCollection (order: [id_ASC]) {
-      items {
-        id
-        name,
-        slug,
-        description,
-        image {
-          title,
-          url
-        }
-      }
+    getAllCategories (order: "id_ASC") {
+      id
+      name,
+      slug,
+      image
     }
   }
 `;
 
 const Categories = () => {
-  const { loading, data } = useQuery<CategoryCollection>(CATEGORIES);
+  const { loading, data } = useQuery<{ getAllCategories: ICategory[] }>(CATEGORIES);
 
-  const categories = useMemo(() => data?.categoryCollection.items, [ data ]);
+  const categories = useMemo(() => data?.getAllCategories, [ data ]);
 
   return (
     <Fragment>
       <Header />
 
       <Container fluid>
-        <h1 style={{ textAlign: "center", margin: "1rem 0" }}>Product Categories</h1>
+        <PageHeading>Product Categories</PageHeading>
+
         { loading && <p>Loading...</p> }
 
         { categories &&
-          <div className="homepage-categories-wrapper">
+          <GridWrapper columns={4}>
             { categories?.map(category =>
-              <div key={ category.id } className="category-single-wrapper">
+              <SingleGridItemWrapper key={ category.id }>
                 <Link to={ "/" + category.slug }>
-                  <img src={ category.image.url } alt={ category.name } />
+                  <img src={ category.image ?? "" } alt={ category.name } />
                   <h3>{ category.name }</h3>
                 </Link>
-              </div>
+              </SingleGridItemWrapper>
             )}
-          </div>
+          </GridWrapper>
         }
       </Container>
     </Fragment>
