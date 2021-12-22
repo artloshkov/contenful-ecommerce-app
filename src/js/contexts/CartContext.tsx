@@ -8,7 +8,7 @@ interface CartProducts {
   [ key: number ]: number,
 }
 
-type State = {
+export interface State {
   productsInCart: CartProducts,
   productsInfo: IProduct[],
   productsTotalCount: number,
@@ -17,13 +17,13 @@ type State = {
   setProductQuantity: (id: number, count: nullable<number>) => void,
   clearCart: () => void,
   getCartTotal: () => number,
-};
+}
 
 interface CartProductVars {
   ids: number[],
 }
 
-const PRODUCTS = gql`
+export const PRODUCTS = gql`
   query getAllProducts($ids: [Int]!) {
     getAllProducts(ids: $ids) {
       id,
@@ -37,7 +37,7 @@ const PRODUCTS = gql`
   }
 `;
 
-const CartContext = React.createContext<optional<State>>(undefined);
+export const CartContext = React.createContext<optional<State>>(undefined);
 
 export const CartContextProvider = ({ children }: { children: JSX.Element}) =>
 {
@@ -67,7 +67,7 @@ export const CartContextProvider = ({ children }: { children: JSX.Element}) =>
   }, []);
 
   const addProduct = useCallback((id, count) => {
-    let newProducts = Object.assign({}, productsInCart);
+    let newProducts = { ...productsInCart };
 
     if (id in productsInCart) {
       newProducts[id] += count;
@@ -79,7 +79,7 @@ export const CartContextProvider = ({ children }: { children: JSX.Element}) =>
   }, [ productsInCart, setProductsWithLocalStorage ]);
 
   const removeProduct = useCallback((id, count) => {
-    let newProducts = Object.assign({}, productsInCart);
+    let newProducts = { ...productsInCart };
 
     if (productsInCart[id] === count) {
       newProducts = _.omit(newProducts, id);
@@ -91,7 +91,7 @@ export const CartContextProvider = ({ children }: { children: JSX.Element}) =>
   }, [ productsInCart, setProductsWithLocalStorage ]);
 
   const setProductQuantity = useCallback((id, count) => {
-    let newProducts = Object.assign({}, productsInCart);
+    let newProducts = { ...productsInCart };
     newProducts[id] = count;
     setProductsWithLocalStorage(newProducts);
   }, [ productsInCart, setProductsWithLocalStorage ]);

@@ -5,7 +5,7 @@ import { ApolloClient, createHttpLink, InMemoryCache } from "@apollo/client";
 // const httpLink = createHttpLink({ uri: "https://graphql.contentful.com/content/v1/spaces/ycfear1kzkii/environments/master" });
 
 // Local Apollo Server
-const httpLink = createHttpLink({ uri: "http://localhost:5000/graphql " });
+const httpLink = createHttpLink({ uri: "http://localhost:5005/graphql" });
 
 // const authLink = setContext((_, { headers }) => {
 //   return {

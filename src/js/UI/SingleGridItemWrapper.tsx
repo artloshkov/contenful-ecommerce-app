@@ -5,10 +5,10 @@ const SingleGridItemWrapper = styled.div`
   padding: 1rem;
 
   a {
-    color: ${props => props.theme.greyColor};
+    color: ${ props => props.theme.greyColor };
 
     &:hover, &:focus {
-      color: ${props => props.theme.greyDarkColor};
+      color: ${ props => props.theme.greyDarkColor };
     }
   }
 
