@@ -94,7 +94,7 @@ describe('CartContextProvider', () => {
     await act(async () => {
       new Promise(resolve => setTimeout(resolve, 100)); // wait for response
     });
-    
+
     expect(productsInCart).toEqual({ "1": 2 });
   });
 
