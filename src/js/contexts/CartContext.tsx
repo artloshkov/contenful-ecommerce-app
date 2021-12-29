@@ -5,7 +5,7 @@ import { IProduct, ProductCollection } from "../Product";
 import { gql, useQuery } from "@apollo/client";
 
 interface CartProducts {
-  [ key: number ]: number,
+  [ key: string ]: number,
 }
 
 export interface State {
@@ -69,7 +69,7 @@ export const CartContextProvider = ({ children }: { children: JSX.Element}) =>
   const addProduct = useCallback((id, count) => {
     let newProducts = { ...productsInCart };
 
-    if (id in productsInCart) {
+    if (productsInCart.hasOwnProperty(id)) {
       newProducts[id] += count;
     } else {
       newProducts[id] = count;
@@ -81,9 +81,13 @@ export const CartContextProvider = ({ children }: { children: JSX.Element}) =>
   const removeProduct = useCallback((id, count) => {
     let newProducts = { ...productsInCart };
 
-    if (productsInCart[id] === count) {
+    if (!productsInCart.hasOwnProperty(id)) {
+      throw Error("There is no product with id `" + id + "` in cart!");
+    } else if (productsInCart[id] < count) {
+      throw Error("There are not enough products with id `" + id + "` in cart to remove them!");
+    } else if (productsInCart[id] === count) {
       newProducts = _.omit(newProducts, id);
-    } else {
+    } else if (productsInCart[id] > count) {
       newProducts[id] -= count;
     }
 
@@ -98,6 +102,7 @@ export const CartContextProvider = ({ children }: { children: JSX.Element}) =>
 
   const clearCart = useCallback(() => setProductsWithLocalStorage({}), [ setProductsWithLocalStorage ]);
 
+  // TODO: If this function has 100% coverage - rewrite it using reduce
   const getCartTotal = useCallback(() => {
     let total = 0;
     Object.keys(productsInCart).forEach(productId => {
