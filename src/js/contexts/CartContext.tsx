@@ -50,8 +50,9 @@ export const CartContextProvider = ({ children }: { children: JSX.Element}) =>
   );
 
   useEffect(() => {
-    if (localStorage.getItem("products")) {
-      setProductsInCart(JSON.parse(localStorage.getItem("products") ?? "{}"));
+    const products = localStorage.getItem("products");
+    if (products) {
+      setProductsInCart(JSON.parse(products));
     }
   }, []);
 
@@ -82,12 +83,17 @@ export const CartContextProvider = ({ children }: { children: JSX.Element}) =>
     let newProducts = { ...productsInCart };
 
     if (!productsInCart.hasOwnProperty(id)) {
-      throw Error("There is no product with id `" + id + "` in cart!");
-    } else if (productsInCart[id] < count) {
-      throw Error("There are not enough products with id `" + id + "` in cart to remove them!");
-    } else if (productsInCart[id] === count) {
+      throw new Error("There is no product with id `" + id + "` in cart!");
+    }
+
+    if (productsInCart[id] < count) {
+      throw new Error("There are not enough products with id `" + id + "` in cart to remove them!");
+    }
+
+    if (productsInCart[id] === count) {
       newProducts = _.omit(newProducts, id);
-    } else if (productsInCart[id] > count) {
+    } else {
+      // productsInCart[id] > count
       newProducts[id] -= count;
     }
 
@@ -102,19 +108,19 @@ export const CartContextProvider = ({ children }: { children: JSX.Element}) =>
 
   const clearCart = useCallback(() => setProductsWithLocalStorage({}), [ setProductsWithLocalStorage ]);
 
-  // TODO: If this function has 100% coverage - rewrite it using reduce
-  const getCartTotal = useCallback(() => {
-    let total = 0;
-    Object.keys(productsInCart).forEach(productId => {
-      const id = parseInt(productId);
+  const getCartTotal = useCallback(() =>
+    Object.keys(productsInCart).reduce((total: number, productId: string) => {
+      const id = Number(productId);
       const product = _.find(productsInfo, product => parseInt(product.id) === id);
-      if (product) {
-        total += productsInCart[id] * product.price;
-      }
-    });
 
-    return total;
-  }, [ productsInCart, productsInfo ]);
+      // istanbul ignore if
+      if (!product) {
+        throw new Error("There is no product with id `" + id + "`!");
+      }
+
+      return total + productsInCart[id] * product.price;
+    }, 0)
+  , [ productsInCart, productsInfo ]);
 
   return (
     <CartContext.Provider value={{ productsInCart, productsInfo, productsTotalCount, addProduct, removeProduct, setProductQuantity, clearCart, getCartTotal }}>
@@ -127,7 +133,7 @@ const useCartContext = () => {
   const cartContext = useContext(CartContext);
 
   if (cartContext === undefined) {
-    throw new Error("CartContext must be within CartProvider")
+    throw new Error("CartContext must be within CartProvider");
   }
 
   return cartContext;
