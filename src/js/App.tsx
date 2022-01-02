@@ -1,7 +1,7 @@
 import {
   BrowserRouter as Router,
   Route,
-  Switch
+  Routes
 } from "react-router-dom";
 import { ApolloProvider } from "@apollo/client";
 import apolloClientConfig from "./utils/apolloClientConfig";
@@ -26,16 +26,16 @@ const App = () => {
       <ThemeProvider theme={ theme }>
         <CartContextProvider>
           <Router>
-            <Switch>
-              <Route path="/" exact component={ Home } />
-              <Route path="/not-found" exact component={ NotFoundPage } />
-              <Route path="/cart" exact component={ Cart } />
-              <Route path="/checkout" exact component={ Checkout } />
-              <Route path="/categories" exact component={ Categories } />
-              <Route path='/:categorySlug/:productSlug' component={ Product } />
-              <Route path='/:categorySlug' component={ Category } />
-              <Route component={ NotFoundPage } />
-            </Switch>
+            <Routes>
+              <Route path="/" element={ <Home /> } />
+              <Route path="/not-found" element={ <NotFoundPage /> } />
+              <Route path="/cart" element={ <Cart /> } />
+              <Route path="/checkout" element={ <Checkout /> } />
+              <Route path="/categories" element={ <Categories /> } />
+              <Route path='/:categorySlug/:productSlug' element={ <Product /> } />
+              <Route path='/:categorySlug' element={ <Category /> } />
+              <Route element={ <NotFoundPage /> } />
+            </Routes>
           </Router>
         </CartContextProvider>
       </ThemeProvider>

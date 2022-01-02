@@ -1,6 +1,6 @@
 import React, { Fragment, useMemo, useState } from "react";
 import { Button, Form, Container, Modal } from "react-bootstrap";
-import { Link, Redirect, useParams } from "react-router-dom";
+import { Link, Navigate, useParams } from "react-router-dom";
 import { gql, useQuery } from "@apollo/client";
 import Header from "./Header";
 import { nullable } from "./utils/common";
@@ -9,10 +9,10 @@ import { ICategory } from "./Category";
 import ModalCloseButton from "./UI/ModalCloseButton";
 import styled from "styled-components";
 
-interface UrlParams {
-  categorySlug: string,
-  productSlug: string,
-}
+// interface UrlParams {
+//   categorySlug: string,
+//   productSlug: string,
+// }
 
 export interface IProduct {
   id: string,
@@ -130,19 +130,19 @@ const ModalWrapper = styled.div`
 
 const Product = () => {
   const [ quantity, setQuantity ] = useState<nullable<number>>(1);
-  const { categorySlug, productSlug } = useParams<UrlParams>();
+  const { categorySlug, productSlug } = useParams();
   const [ isModalOpen, setIsModalOpen ] = useState<boolean>(false);
   const cartContext = useCartContext();
 
   const { loading, error, data } = useQuery<{ getSingleProductBySlug: IProduct }, SingleProductVars>(
     PRODUCT,
-    { variables: { slug: productSlug }, }
+    { variables: { slug: productSlug ?? "" }, }
   );
 
   const product = useMemo(() => data?.getSingleProductBySlug, [ data ]);
 
   if (error) {
-    return <Redirect to="/not-found" />;
+    return <Navigate to="/not-found" />;
   }
 
   return (
@@ -152,7 +152,7 @@ const Product = () => {
       <Container fluid>
         { loading && <p>Loading...</p> }
 
-        { !loading && !product && <Redirect to="/not-found" /> }
+        { !loading && !product && <Navigate to="/not-found" /> }
 
         { !loading && product &&
           <ProductPageWrapper>

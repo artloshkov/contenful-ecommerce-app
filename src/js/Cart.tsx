@@ -1,6 +1,6 @@
 import React, { Fragment, useCallback, useState } from "react";
 import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
-import { Link, Redirect } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import Header from "./Header";
 import useCartContext from "./contexts/CartContext";
 import { nullable } from "./utils/common";
@@ -73,7 +73,7 @@ const Cart = () => {
   const _goToCheckoutPage = useCallback(() => setRedirect("/checkout"), []);
 
   if (redirect) {
-    return <Redirect to={ redirect } />;
+    return <Navigate to={ redirect } />;
   }
 
   return (

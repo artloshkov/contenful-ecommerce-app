@@ -1,15 +1,15 @@
 import React, { Fragment, useMemo } from "react";
 import { Button, Container } from "react-bootstrap";
 import { gql, useQuery } from "@apollo/client";
-import { Link, Redirect, useParams } from "react-router-dom";
+import { Link, Navigate, useParams } from "react-router-dom";
 import Header from "./Header";
 import { IProduct } from "./Product";
 import ProductsGrid from "./UI/ProductsGrid";
 import styled from "styled-components";
 
-interface UrlParams {
-  categorySlug: string,
-}
+// interface UrlParams {
+//   categorySlug: string,
+// }
 
 export interface ICategory {
   id: string,
@@ -59,17 +59,17 @@ const CategoryPageWrapper = styled.div`
 `;
 
 const Category = () => {
-  const { categorySlug } = useParams<UrlParams>();
+  const { categorySlug } = useParams();
 
   const { loading, error, data } = useQuery<{ getSingleCategoryBySlug: ICategory }, SingleCategoryVars>(
     CATEGORY,
-    { variables: { slug: categorySlug }, }
+    { variables: { slug: categorySlug ?? "" }, }
   );
 
   const category = useMemo(() => data?.getSingleCategoryBySlug, [ data ]);
 
   if (error) {
-    return <Redirect to="/not-found" />;
+    return <Navigate to="/not-found" />;
   }
 
   return (
@@ -79,7 +79,7 @@ const Category = () => {
       <Container fluid>
         { loading && <p>Loading...</p> }
 
-        { !loading && !category && <Redirect to="/not-found" /> }
+        { !loading && !category && <Navigate to="/not-found" /> }
 
         { !loading && category &&
           <CategoryPageWrapper>
