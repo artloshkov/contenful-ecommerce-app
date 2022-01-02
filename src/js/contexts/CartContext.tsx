@@ -39,8 +39,7 @@ export const PRODUCTS = gql`
 
 export const CartContext = React.createContext<optional<State>>(undefined);
 
-export const CartContextProvider = ({ children }: { children: JSX.Element}) =>
-{
+export const CartContextProvider = ({ children }: { children: JSX.Element}) => {
   const [ productsInCart, setProductsInCart ] = useState<CartProducts>({});
   const [ productsInfo, setProductsInfo ] = useState<IProduct[]>([]);
 
@@ -68,9 +67,9 @@ export const CartContextProvider = ({ children }: { children: JSX.Element}) =>
   }, []);
 
   const addProduct = useCallback((id, count) => {
-    let newProducts = { ...productsInCart };
+    const newProducts = { ...productsInCart };
 
-    if (productsInCart.hasOwnProperty(id)) {
+    if (Object.prototype.hasOwnProperty.call(productsInCart, id)) {
       newProducts[id] += count;
     } else {
       newProducts[id] = count;
@@ -82,7 +81,7 @@ export const CartContextProvider = ({ children }: { children: JSX.Element}) =>
   const removeProduct = useCallback((id, count) => {
     let newProducts = { ...productsInCart };
 
-    if (!productsInCart.hasOwnProperty(id)) {
+    if (!Object.prototype.hasOwnProperty.call(productsInCart, id)) {
       throw new Error("There is no product with id `" + id + "` in cart!");
     }
 

@@ -1,5 +1,5 @@
 import React, { Fragment, useCallback, useMemo, useState } from "react";
-import { gql, useMutation } from '@apollo/client';
+import { gql, useMutation } from "@apollo/client";
 import { Link } from "react-router-dom";
 import { Button, Card, Col, Container, Form, Modal, Row } from "react-bootstrap";
 import useCartContext from "./contexts/CartContext";
@@ -23,6 +23,7 @@ interface CreateOrderVars {
     phone: nullable<string>,
     address: string,
     total: number,
+    // eslint-disable-next-line camelcase
     products: { product_id: number, quantity: number }[],
   }
 }
@@ -66,7 +67,7 @@ const Checkout = () => {
       phone: phone,
       address: address,
       total: cartContext.getCartTotal(),
-      products: Object.keys(cartContext.productsInCart).map((id) => { return { product_id: parseInt(id), quantity: cartContext.productsInCart[ parseInt(id) ] } }),
+      products: Object.keys(cartContext.productsInCart).map((id) => { return { product_id: parseInt(id), quantity: cartContext.productsInCart[ parseInt(id) ] }; }),
     };
   }, [ name, email, phone, address, cartContext ]);
 
@@ -79,11 +80,12 @@ const Checkout = () => {
   const _submitForm = useCallback(() => {
     setIsModalOpen(true);
     createOrder()
-    .then(result => {
-      if (result.data?.createOrder.id) {
-        cartContext.clearCart();
-      }
-    });
+      .then(result => {
+        if (result.data?.createOrder.id) {
+          cartContext.clearCart();
+        }
+      })
+    ;
   }, [ cartContext, createOrder ]);
 
   return (

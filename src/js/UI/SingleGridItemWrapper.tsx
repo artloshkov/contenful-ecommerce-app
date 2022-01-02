@@ -1,4 +1,4 @@
-import styled from "styled-components"
+import styled from "styled-components";
 
 const SingleGridItemWrapper = styled.div`
   border: 1px solid #eee;

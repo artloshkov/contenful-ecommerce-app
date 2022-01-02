@@ -63,7 +63,7 @@ const Category = () => {
 
   const { loading, error, data } = useQuery<{ getSingleCategoryBySlug: ICategory }, SingleCategoryVars>(
     CATEGORY,
-    { variables: { slug: categorySlug ?? "" }, }
+    { variables: { slug: categorySlug ?? "" } },
   );
 
   const category = useMemo(() => data?.getSingleCategoryBySlug, [ data ]);

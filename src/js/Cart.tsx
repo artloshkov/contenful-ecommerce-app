@@ -109,18 +109,17 @@ const Cart = () => {
                               <p className="product-title">{ product.name }</p>
                             </Link>
                             <p className="product-price">${ (product.price / 100).toFixed(2) }</p>
-                            <Button variant="danger" onClick={ () => cartContext.removeProduct(productId, cartContext.productsInCart[ productId ]) }>Remove Item</Button>
+                            <Button variant="danger" onClick={ () => cartContext.removeProduct(productId, cartContext.productsInCart[productId]) }>Remove Item</Button>
                           </div>
 
                           <div className="product-info-right">
-                            <Form.Control type="number" value={ cartContext.productsInCart[ productId ] ?? "" } min={1} max={99} onChange={ (event) => parseInt(event.target.value) > 0 ? cartContext.setProductQuantity(productId, parseInt(event.target.value)) : cartContext.setProductQuantity(productId, null) } />
-                            <p>Total: <br /><span className="price-total">{ "$" + ((cartContext.productsInCart[ productId ] ?? 0) * product.price / 100).toFixed(2) }</span></p>
+                            <Form.Control type="number" value={ cartContext.productsInCart[productId] ?? "" } min={1} max={99} onChange={ (event) => parseInt(event.target.value) > 0 ? cartContext.setProductQuantity(productId, parseInt(event.target.value)) : cartContext.setProductQuantity(productId, null) } />
+                            <p>Total: <br /><span className="price-total">{ "$" + ((cartContext.productsInCart[productId] ?? 0) * product.price / 100).toFixed(2) }</span></p>
                           </div>
                         </div>
                       </div>
                     );
-                  }
-                  )}
+                  })}
                 </Card.Body>
               }
 

@@ -9,11 +9,6 @@ import { ICategory } from "./Category";
 import ModalCloseButton from "./UI/ModalCloseButton";
 import styled from "styled-components";
 
-// interface UrlParams {
-//   categorySlug: string,
-//   productSlug: string,
-// }
-
 export interface IProduct {
   id: string,
   categories?: ICategory[],
@@ -195,7 +190,7 @@ const Product = () => {
           centered
         >
           <Modal.Header>
-            <Modal.Title>You've added { quantity } product{ quantity && quantity > 1 ? "s" : "" } to cart!</Modal.Title>
+            <Modal.Title>You&apos;ve added { quantity } product{ quantity && quantity > 1 ? "s" : "" } to cart!</Modal.Title>
             <ModalCloseButton onClick={ () => setIsModalOpen(false) } />
           </Modal.Header>
           <Modal.Body>

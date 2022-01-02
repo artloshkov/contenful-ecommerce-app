@@ -12,7 +12,7 @@ const testProduct = {
   slug: "test-product-1",
   stock: 100,
 };
-const productData = [testProduct];
+const productData = [ testProduct ];
 
 const getMockData = (data = productData) => [
   {

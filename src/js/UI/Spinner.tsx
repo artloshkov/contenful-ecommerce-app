@@ -13,7 +13,7 @@ const spin = keyframes`
 `;
 
 const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
-  animation: ${spin} infinite 1.5s linear;
+  animation: ${ spin } infinite 1.5s linear;
 `;
 
 const Spinner = () => <StyledFontAwesomeIcon icon={ faSpinner } />;
