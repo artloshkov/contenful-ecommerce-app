@@ -140,6 +140,17 @@ describe("CartContextProvider", () => {
     expect(cartContext.current.getCartTotal()).toEqual(testProduct.price * numberOfProducts);
   });
 
+  it("will get cart total of 0 if no mock data is provided", async () => {
+    const cartContext = getCartContext();
+
+    await act(async () => {
+      await cartContext.current.addProduct(Number(testProduct.id), 5);
+      await new Promise(resolve => setTimeout(resolve, 100)); // wait for response
+    });
+
+    expect(cartContext.current.getCartTotal()).toEqual(0);
+  });
+
   it("can clear cart", async () => {
     const cartContext = getCartContext();
 

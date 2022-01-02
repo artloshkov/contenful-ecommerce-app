@@ -108,8 +108,12 @@ export const CartContextProvider = ({ children }: { children: JSX.Element}) =>
 
   const clearCart = useCallback(() => setProductsWithLocalStorage({}), [ setProductsWithLocalStorage ]);
 
-  const getCartTotal = useCallback(() =>
-    Object.keys(productsInCart).reduce((total: number, productId: string) => {
+  const getCartTotal = useCallback(() => {
+    if (productsInfo.length === 0) {
+      return 0;
+    }
+
+    return Object.keys(productsInCart).reduce((total: number, productId: string) => {
       const id = Number(productId);
       const product = _.find(productsInfo, product => parseInt(product.id) === id);
 
@@ -119,8 +123,8 @@ export const CartContextProvider = ({ children }: { children: JSX.Element}) =>
       }
 
       return total + productsInCart[id] * product.price;
-    }, 0)
-  , [ productsInCart, productsInfo ]);
+    }, 0);
+  }, [ productsInCart, productsInfo ]);
 
   return (
     <CartContext.Provider value={{ productsInCart, productsInfo, productsTotalCount, addProduct, removeProduct, setProductQuantity, clearCart, getCartTotal }}>
