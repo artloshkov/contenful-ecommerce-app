@@ -67,7 +67,7 @@ const Checkout = () => {
       phone: phone,
       address: address,
       total: cartContext.getCartTotal(),
-      products: Object.keys(cartContext.productsInCart).map((id) => { return { product_id: parseInt(id), quantity: cartContext.productsInCart[ parseInt(id) ] }; }),
+      products: Object.keys(cartContext.productsInCart).map((id) => { return { product_id: parseInt(id), quantity: cartContext.productsInCart[parseInt(id)] }; }),
     };
   }, [ name, email, phone, address, cartContext ]);
 

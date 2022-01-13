@@ -16,7 +16,7 @@ import Checkout from "./Checkout";
 import { CartContextProvider } from "./contexts/CartContext";
 import { ThemeProvider } from "styled-components";
 
-const theme = {
+export const theme = {
   greyColor: "#595959",
   greyDarkColor: "#2b2b2b",
 };

@@ -8,6 +8,7 @@ interface Props {
 
 const StyledCloseButton = styled(CloseButton)`
   line-height: 1;
+  box-sizing: border-box;
 
   span {
     font-size: 2rem;

@@ -20,6 +20,7 @@
     "@types/styled-components": "^5.1.14",
     "bootstrap": "5.1.0",
     "graphql": "^15.5.3",
+    "jest-styled-components": "^7.0.8",
     "lodash": "^4.17.21",
     "react": "^17.0.2",
     "react-bootstrap": "^1.6.1",
@@ -52,6 +53,14 @@
         "rules": {
           "import/no-anonymous-default-export": "off"
         }
+      },
+      {
+        "files": [
+          "**/*.stories.*"
+        ],
+        "rules": {
+          "import/no-anonymous-default-export": "off"
+        }
       }
     ]
   },
@@ -71,20 +80,28 @@
     "styled-components": "^5"
   },
   "devDependencies": {
-    "@storybook/addon-actions": "^6.4.9",
-    "@storybook/addon-essentials": "^6.4.9",
-    "@storybook/addon-links": "^6.4.9",
-    "@storybook/node-logger": "^6.4.9",
-    "@storybook/preset-create-react-app": "^3.2.0",
-    "@storybook/react": "^6.4.9",
+    "@mdx-js/react": "^1.6.22",
+    "@storybook/addon-actions": "^6.4.12",
+    "@storybook/addon-docs": "^6.4.12",
+    "@storybook/addon-essentials": "^6.4.12",
+    "@storybook/addon-links": "^6.4.12",
+    "@storybook/addon-storyshots": "^6.4.12",
+    "@storybook/builder-webpack5": "^6.4.12",
+    "@storybook/manager-webpack5": "^6.4.12",
+    "@storybook/node-logger": "^6.4.12",
+    "@storybook/preset-create-react-app": "^4.0.0",
+    "@storybook/react": "^6.4.12",
     "@typescript-eslint/eslint-plugin": "^5.8.1",
     "@typescript-eslint/parser": "^5.8.1",
+    "babel-eslint": "^10.1.0",
     "eslint": "^7.32.0",
     "eslint-config-standard": "^16.0.3",
     "eslint-plugin-import": "^2.25.3",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^5.2.0",
-    "eslint-plugin-react": "^7.28.0"
+    "eslint-plugin-react": "^7.28.0",
+    "eslint-plugin-storybook": "^0.5.5",
+    "webpack": "^5.65.0"
   },
   "packageManager": "yarn@3.1.1",
   "homepage": "."

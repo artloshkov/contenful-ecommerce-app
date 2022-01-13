@@ -100,7 +100,7 @@ export const CartContextProvider = ({ children }: { children: JSX.Element}) => {
   }, [ productsInCart, setProductsWithLocalStorage ]);
 
   const setProductQuantity = useCallback((id, count) => {
-    let newProducts = { ...productsInCart };
+    const newProducts = { ...productsInCart };
     newProducts[id] = count;
     setProductsWithLocalStorage(newProducts);
   }, [ productsInCart, setProductsWithLocalStorage ]);
