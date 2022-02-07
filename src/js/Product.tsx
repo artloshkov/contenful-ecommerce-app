@@ -124,9 +124,9 @@ const ModalWrapper = styled.div`
 `;
 
 const Product = () => {
-  const [ quantity, setQuantity ] = useState<nullable<number>>(1);
+  const [quantity, setQuantity] = useState<nullable<number>>(1);
   const { categorySlug, productSlug } = useParams();
-  const [ isModalOpen, setIsModalOpen ] = useState<boolean>(false);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const cartContext = useCartContext();
 
   const { loading, error, data } = useQuery<{ getSingleProductBySlug: IProduct }, SingleProductVars>(
@@ -134,7 +134,7 @@ const Product = () => {
     { variables: { slug: productSlug ?? "" }, }
   );
 
-  const product = useMemo(() => data?.getSingleProductBySlug, [ data ]);
+  const product = useMemo(() => data?.getSingleProductBySlug, [data]);
 
   if (error) {
     return <Navigate to="/not-found" />;

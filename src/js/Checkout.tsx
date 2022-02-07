@@ -54,11 +54,11 @@ const ModalWrapper = styled.div`
 
 const Checkout = () => {
   const cartContext = useCartContext();
-  const [ name, setName ] = useState<string>("");
-  const [ email, setEmail ] = useState<string>("");
-  const [ phone, setPhone ] = useState<string>("");
-  const [ address, setAddress ] = useState<string>("");
-  const [ isModalOpen, setIsModalOpen ] = useState<boolean>(false);
+  const [name, setName] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [phone, setPhone] = useState<string>("");
+  const [address, setAddress] = useState<string>("");
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   const orderData = useMemo(() => {
     return {
@@ -69,13 +69,13 @@ const Checkout = () => {
       total: cartContext.getCartTotal(),
       products: Object.keys(cartContext.productsInCart).map((id) => { return { product_id: parseInt(id), quantity: cartContext.productsInCart[parseInt(id)] }; }),
     };
-  }, [ name, email, phone, address, cartContext ]);
+  }, [name, email, phone, address, cartContext]);
 
-  const [ createOrder, { data, loading, error } ] = useMutation<CreateOrderResponse, CreateOrderVars>(CREATE_ORDER,
+  const [createOrder, { data, loading, error }] = useMutation<CreateOrderResponse, CreateOrderVars>(CREATE_ORDER,
     { variables: { orderData: orderData } }
   );
 
-  const isFormValid = useMemo(() => !!name && !!email && !!phone && !!address, [ name, email, phone, address ]);
+  const isFormValid = useMemo(() => !!name && !!email && !!phone && !!address, [name, email, phone, address]);
 
   const _submitForm = useCallback(() => {
     setIsModalOpen(true);
@@ -86,7 +86,7 @@ const Checkout = () => {
         }
       })
     ;
-  }, [ cartContext, createOrder ]);
+  }, [cartContext, createOrder]);
 
   return (
     <Fragment>

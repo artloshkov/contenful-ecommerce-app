@@ -40,8 +40,8 @@ export const PRODUCTS = gql`
 export const CartContext = React.createContext<optional<State>>(undefined);
 
 export const CartContextProvider = ({ children }: { children: JSX.Element}) => {
-  const [ productsInCart, setProductsInCart ] = useState<CartProducts>({});
-  const [ productsInfo, setProductsInfo ] = useState<IProduct[]>([]);
+  const [productsInCart, setProductsInCart] = useState<CartProducts>({});
+  const [productsInfo, setProductsInfo] = useState<IProduct[]>([]);
 
   const { data } = useQuery<ProductCollection, CartProductVars>(
     PRODUCTS,
@@ -57,9 +57,9 @@ export const CartContextProvider = ({ children }: { children: JSX.Element}) => {
 
   useEffect(() => {
     setProductsInfo(oldProductsInfo => data ? data.getAllProducts : oldProductsInfo);
-  }, [ data ]);
+  }, [data]);
 
-  const productsTotalCount = useMemo(() => Object.values(productsInCart).reduce((accumulator, num) => accumulator + num, 0), [ productsInCart ]);
+  const productsTotalCount = useMemo(() => Object.values(productsInCart).reduce((accumulator, num) => accumulator + num, 0), [productsInCart]);
 
   const setProductsWithLocalStorage = useCallback((products: CartProducts) => {
     setProductsInCart(products);
@@ -76,7 +76,7 @@ export const CartContextProvider = ({ children }: { children: JSX.Element}) => {
     }
 
     setProductsWithLocalStorage(newProducts);
-  }, [ productsInCart, setProductsWithLocalStorage ]);
+  }, [productsInCart, setProductsWithLocalStorage]);
 
   const removeProduct = useCallback((id, count) => {
     let newProducts = { ...productsInCart };
@@ -97,15 +97,15 @@ export const CartContextProvider = ({ children }: { children: JSX.Element}) => {
     }
 
     setProductsWithLocalStorage(newProducts);
-  }, [ productsInCart, setProductsWithLocalStorage ]);
+  }, [productsInCart, setProductsWithLocalStorage]);
 
   const setProductQuantity = useCallback((id, count) => {
     const newProducts = { ...productsInCart };
     newProducts[id] = count;
     setProductsWithLocalStorage(newProducts);
-  }, [ productsInCart, setProductsWithLocalStorage ]);
+  }, [productsInCart, setProductsWithLocalStorage]);
 
-  const clearCart = useCallback(() => setProductsWithLocalStorage({}), [ setProductsWithLocalStorage ]);
+  const clearCart = useCallback(() => setProductsWithLocalStorage({}), [setProductsWithLocalStorage]);
 
   const getCartTotal = useCallback(() => {
     if (productsInfo.length === 0) {
@@ -123,7 +123,7 @@ export const CartContextProvider = ({ children }: { children: JSX.Element}) => {
 
       return total + productsInCart[id] * product.price;
     }, 0);
-  }, [ productsInCart, productsInfo ]);
+  }, [productsInCart, productsInfo]);
 
   return (
     <CartContext.Provider value={{ productsInCart, productsInfo, productsTotalCount, addProduct, removeProduct, setProductQuantity, clearCart, getCartTotal }}>

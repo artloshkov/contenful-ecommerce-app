@@ -68,7 +68,7 @@ const CartProductsWrapper = styled(Card)`
 
 const Cart = () => {
   const cartContext = useCartContext();
-  const [ redirect, setRedirect ] = useState<nullable<string>>(null);
+  const [redirect, setRedirect] = useState<nullable<string>>(null);
 
   const _goToCheckoutPage = useCallback(() => setRedirect("/checkout"), []);
 

@@ -66,7 +66,7 @@ const Category = () => {
     { variables: { slug: categorySlug ?? "" } },
   );
 
-  const category = useMemo(() => data?.getSingleCategoryBySlug, [ data ]);
+  const category = useMemo(() => data?.getSingleCategoryBySlug, [data]);
 
   if (error) {
     return <Navigate to="/not-found" />;

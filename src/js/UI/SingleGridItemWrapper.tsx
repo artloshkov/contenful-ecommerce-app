@@ -15,7 +15,7 @@ const SingleGridItemWrapper = styled.div`
   &:hover {
     background-color: #eee;
   }
-
+  
   .product-name {
     padding: 1rem 0;
     font-weight: 600;

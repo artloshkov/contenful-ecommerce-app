@@ -29,7 +29,7 @@ const RECENT_PRODUCTS = gql`
 const Home = () => {
   const { loading, data } = useQuery<ProductCollection>(RECENT_PRODUCTS);
 
-  const products = useMemo(() => data?.getAllProducts, [ data ]);
+  const products = useMemo(() => data?.getAllProducts, [data]);
 
   return (
     <Fragment>

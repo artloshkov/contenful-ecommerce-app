@@ -22,7 +22,7 @@ const CATEGORIES = gql`
 const Categories = () => {
   const { loading, data } = useQuery<{ getAllCategories: ICategory[] }>(CATEGORIES);
 
-  const categories = useMemo(() => data?.getAllCategories, [ data ]);
+  const categories = useMemo(() => data?.getAllCategories, [data]);
 
   return (
     <Fragment>
