@@ -188,4 +188,8 @@ describe("CartContextProvider", () => {
 
     expect(() => cartContext.current.removeProduct(testProduct.id, 5)).toThrow(/not enough products/);
   });
+
+  it("will fail", () => {
+    expect(true).toBe(false);
+  });
 });
